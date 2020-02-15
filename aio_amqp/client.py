@@ -1472,9 +1472,6 @@ class Client:
         
     def _raise_if_connection_closed(self) -> None:
         if not self._connection_open:
-            if self._connection_exception is not None:
-                raise self._connection_exception
-
             raise ConnectionClosedError()
 
     def _raise_if_channel_closed(self, channel_id: int) -> None:
@@ -1537,8 +1534,6 @@ class Client:
         self._tune_heartbeat = None
 
         self._last_receive_time = None
-
-        self._connection_exception = exception
 
         future = self._reasons.pop('connection_close', None)
         if future is not None and not future.done():
